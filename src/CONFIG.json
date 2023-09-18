@@ -1,0 +1,21 @@
+{
+    "MAXIMUM_NODES"         : 30,
+    "MAXIMUM_SUB_NODES"     : 2,
+    "SAVE_DATA_EACH"        : 10,
+    "MARKER_RADIUS"         : 10,
+    "LEARNING_RATE"         : 0.001,
+    "LAMBDA"                : 0.0001,
+    "GAUSS_KERNEL_SIGMA"    : 2,
+    "GAUSS_RESPONSE_SIGMA"  : 2,
+    "CURVE_METHOD"          : "abs",
+    "N_DIFF"                : 50,
+    "RESULTS_PATH"          : "./results",
+    "SAVE_RESULTS"          : true,
+    "PLOT_ARROWS"           : true,
+    "SCALE_ARROWS"          : 1,
+    "CALC_DIRECTION_EACH"   : 1,
+    "FRAMES_PER_SECONDS"    : 30,
+    "TIME_COL_NAME"         : "TIME",
+    "X_COL_NAME"            : "STRAIN",
+    "Y_COL_NAME"            : "STRESS"
+}
