@@ -1,14 +1,19 @@
 import os
 import numpy as np
+import cv2
 
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QWidget
+
+from src import CONFIG_FILE
 
 from src.utils.CZoom import CZoom
 from src.utils.CVideoCapture import CVideoCapture
 from src.vot.CStructure import CStructure
 from src.vot.CTracker import CTracker
 from src.gui.widgets.CScaleDialog import Dialog
+
+RESULTS_FILE = CONFIG_FILE.get("RESULTS_PATH", "./results")
 
 def gen_cover( size : tuple[ int, int ] = ( 640, 480 ) ) -> QtGui.QImage:
     frame = np.zeros( [ size[1], size[0], 3 ] )
@@ -83,9 +88,22 @@ class CVideoView( object ):
         I = self.zoom.crop( I )
         return I
 
+    def _savePic( self ):
+        self.structure.draw( self.cframe, False )
+        filepath = os.path.join( RESULTS_FILE, "captures" )
+        if not os.path.exists(filepath): os.makedirs(filepath) 
+        for _, _, f in os.walk(filepath): break
+        filenames = f
+        c = 1
+        while True:
+            filename = f"capture_{c}.jpg"; c = c + 1
+            if filename not in filenames: break
+        filename = os.path.join( filepath, filename )
+        cv2.imwrite( filename, cv2.cvtColor(self.cframe, cv2.COLOR_RGB2BGR) )
+
     def _playClickCallback( self ):
         if self.active: self.active = False; self.play_button.setText( "Start" )
-        else:           self.active = True ; self.play_button.setText( "Stop"  ); self.parent.unsetMouseEvents()
+        else:           self.active = True ; self._savePic(); self.play_button.setText( "Stop"  ); self.parent.unsetMouseEvents()
 
     def _browseClickCallback( self ):
         filename, _ = QtWidgets.QFileDialog.getOpenFileName(

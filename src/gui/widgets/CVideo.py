@@ -24,8 +24,11 @@ class CVideo( QtWidgets.QWidget, CVideoView ):
         #if self.active:
         if isinstance( self.cap, CVideoCapture ):
             # TODO: CATCH ERROR StopIteration
-            frame = self.cap.next( self.active )
-            self._setFrame( frame )
+            try:
+                frame = self.cap.next( self.active )
+                self._setFrame( frame )
+            except StopIteration:
+                if self.active: self._playClickCallback()
         else:
             self._setFrame()
 
